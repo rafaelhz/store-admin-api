@@ -4,7 +4,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const { apiErrorHandler } = require('./utils/errors');
+const { apiErrorHandler } = require("./utils/errors");
 
 app.use(helmet());
 app.use(cors());

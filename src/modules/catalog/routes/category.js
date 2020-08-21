@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 
 const { asyncMiddleware } = require("../../../utils/errors");
 const categoryService = require("../services/category");
 
-module.exports = app => {
+module.exports = (app) => {
   const router = express.Router();
-  app.use('/categories', router);
+  app.use("/categories", router);
 
   router.get(
     "/",

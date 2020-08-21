@@ -24,26 +24,27 @@ class NotFound extends Error {
   }
 }
 
-const asyncMiddleware = middleware => {
-  const wrap = async (req, res, next) => {
+const asyncMiddleware = (middleware) => {
+  return async (req, res, next) => {
     try {
       await middleware(req, res, next);
     } catch (err) {
       next(err);
     }
   };
-  return wrap;
 };
 
 const apiErrorHandler = (err, _req, res, _next) => {
   if (err.httpStatusCode) {
-    res.status(statusCode).json({ error: err.message || String(err) });
+    res.status(err.httpStatusCode).json({ error: err.message || String(err) });
     return;
-  } 
+  }
 
   logger.error(`Unexpected error: ${err.message}`, err);
 
-  res.status(500).json({ error: "Oops, something went wrong. Please try again later." });
+  res
+    .status(500)
+    .json({ error: "Oops, something went wrong. Please try again later." });
 };
 
 module.exports = {
@@ -52,5 +53,5 @@ module.exports = {
   BadRequest,
   Unauthorized,
   Forbidden,
-  NotFound
+  NotFound,
 };
