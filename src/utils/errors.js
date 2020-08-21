@@ -1,3 +1,5 @@
+const logger = require("../utils/logger");
+
 class BadRequest extends Error {
   get httpStatusCode() {
     return 400;
@@ -34,8 +36,14 @@ const asyncMiddleware = middleware => {
 };
 
 const apiErrorHandler = (err, _req, res, _next) => {
-  const statusCode = err.httpStatusCode || 500;
-  res.status(statusCode).json({ error: err.message || String(err) });
+  if (err.httpStatusCode) {
+    res.status(statusCode).json({ error: err.message || String(err) });
+    return;
+  } 
+
+  logger.error(`Unexpected error: ${err.message}`, err);
+
+  res.status(500).json({ error: "Oops, something went wrong. Please try again later." });
 };
 
 module.exports = {
