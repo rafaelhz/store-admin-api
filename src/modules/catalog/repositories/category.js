@@ -1,7 +1,11 @@
 const { db } = require("../../../db");
 
 const getCategories = () => {
-  return db("categories").orderBy("name");
+  return db("categories").whereNull("deleted_at").orderBy("name");
+};
+
+const getCategoryById = (id) => {
+  return db("categories").where({ id });
 };
 
 const createCategory = async (category) => {
@@ -24,8 +28,18 @@ const updateCategory = async (category) => {
   );
 };
 
+const deleteCategory = async (categoryId) => {
+  return (
+    (await db("categories").where({ id: categoryId }).update({
+      deleted_at: new Date(),
+    })) > 0
+  );
+};
+
 module.exports = {
   getCategories,
+  getCategoryById,
   createCategory,
   updateCategory,
+  deleteCategory,
 };

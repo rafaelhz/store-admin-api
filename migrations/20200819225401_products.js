@@ -2,7 +2,9 @@ exports.up = async (knex) => {
   await knex.schema.createTable("categories", (table) => {
     table.increments();
     table.string("name", 80).notNullable();
-    table.timestamps();
+    table.datetime("created_at");
+    table.datetime("updated_at");
+    table.datetime("deleted_at");
   });
 
   return knex.schema.createTable("products", (table) => {
@@ -15,7 +17,9 @@ exports.up = async (knex) => {
       .inTable("categories")
       .index();
     table.integer("price").notNullable();
-    table.timestamps();
+    table.datetime("created_at");
+    table.datetime("updated_at");
+    table.datetime("deleted_at");
   });
 };
 
