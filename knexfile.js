@@ -1,15 +1,16 @@
 module.exports = {
-  client: "postgres",
+  client: process.env.DB_ENGINE,
   connection: {
-    host: "localhost",
-    user: "postgres",
-    port: "5433",
-    password: "1234",
-    database: "store",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    port: +process.env.DB_PORT,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    charset: "utf8",
   },
   pool: {
-    min: 2,
-    max: 10,
+    min: +process.env.DB_POOL_MIN,
+    max: +process.env.DB_POOL_MAX,
   },
   migrations: {
     tableName: "knex_migrations",
