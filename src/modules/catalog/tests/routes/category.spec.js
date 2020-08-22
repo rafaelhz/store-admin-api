@@ -2,7 +2,7 @@ const {
   initResources,
   fetch,
   closeResources,
-} = require("../../../../utils/tests-utils");
+} = require("../../../../utils/tests");
 const categoryService = require("../../services/category");
 
 jest.mock("../../services/category");
