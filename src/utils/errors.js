@@ -1,24 +1,26 @@
 const logger = require("../utils/logger");
 
-class BadRequest extends Error {
+class HttpError extends Error {}
+
+class BadRequest extends HttpError {
   get httpStatusCode() {
     return 400;
   }
 }
 
-class Unauthorized extends Error {
+class Unauthorized extends HttpError {
   get httpStatusCode() {
     return 401;
   }
 }
 
-class Forbidden extends Error {
+class Forbidden extends HttpError {
   get httpStatusCode() {
     return 403;
   }
 }
 
-class NotFound extends Error {
+class NotFound extends HttpError {
   get httpStatusCode() {
     return 404;
   }
@@ -35,7 +37,7 @@ const asyncMiddleware = (middleware) => {
 };
 
 const apiErrorHandler = (err, _req, res, _next) => {
-  if (err.httpStatusCode) {
+  if (err instanceof HttpError) {
     res.status(err.httpStatusCode).json({ error: err.message || String(err) });
     return;
   }

@@ -11,8 +11,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Routes
 const api = express.Router();
+require("./modules/authentication/routes/auth")(api);
 require("./modules/catalog/routes/category")(api);
 require("./modules/catalog/routes/product")(api);
 

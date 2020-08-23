@@ -1,6 +1,8 @@
 const express = require("express");
 
 const { asyncMiddleware } = require("../../../utils/errors");
+const { CUSTOMER, ADMIN } = require("../../authentication/roles");
+const authorize = require("../../authentication/authorize");
 const categoryService = require("../services/category");
 
 module.exports = (app) => {
@@ -9,6 +11,7 @@ module.exports = (app) => {
 
   router.get(
     "/",
+    authorize([CUSTOMER, ADMIN]),
     asyncMiddleware(async (_req, res) => {
       const categories = await categoryService.getCategories();
 
@@ -18,6 +21,7 @@ module.exports = (app) => {
 
   router.get(
     "/:id",
+    authorize([CUSTOMER, ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { id } = req.params;
       const category = await categoryService.getCategoryById(id);
@@ -28,6 +32,7 @@ module.exports = (app) => {
 
   router.post(
     "/",
+    authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { name } = req.body;
       const category = await categoryService.createCategory({
@@ -40,6 +45,7 @@ module.exports = (app) => {
 
   router.put(
     "/:id",
+    authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { id } = req.params;
       const { name } = req.body;
@@ -54,6 +60,7 @@ module.exports = (app) => {
 
   router.delete(
     "/:id",
+    authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const id = req.params.id;
       const deleted = await categoryService.deleteCategory(id);
