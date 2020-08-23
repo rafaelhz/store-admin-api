@@ -40,7 +40,7 @@ describe("Category - Routes", () => {
       const res = await fetch(API_URL);
 
       expect(categoryService.getCategories).toHaveBeenCalledTimes(1);
-      expect(res.status).toEqual(200);
+      expect(res.status).toBe(200);
       expect(await res.json()).toEqual([category]);
     });
 
@@ -49,7 +49,7 @@ describe("Category - Routes", () => {
 
       const res = await fetch(API_URL);
 
-      expect(res.status).toEqual(401);
+      expect(res.status).toBe(401);
     });
   });
 
@@ -63,7 +63,7 @@ describe("Category - Routes", () => {
       const res = await fetch(`${API_URL}/${category.id}`);
 
       expect(categoryService.getCategoryById).toHaveBeenCalledWith(category.id);
-      expect(res.status).toEqual(200);
+      expect(res.status).toBe(200);
       expect(await res.json()).toEqual(category);
     });
 
@@ -72,7 +72,7 @@ describe("Category - Routes", () => {
 
       const res = await fetch(`${API_URL}/${category.id}`);
 
-      expect(res.status).toEqual(401);
+      expect(res.status).toBe(401);
     });
   });
 
@@ -93,7 +93,7 @@ describe("Category - Routes", () => {
       expect(categoryService.createCategory).toHaveBeenCalledWith({
         name: category.name,
       });
-      expect(res.status).toEqual(200);
+      expect(res.status).toBe(200);
       expect(await res.json()).toEqual(category);
     });
 
@@ -107,7 +107,7 @@ describe("Category - Routes", () => {
         },
       });
 
-      expect(res.status).toEqual(401);
+      expect(res.status).toBe(401);
     });
 
     it("Returns forbidden status when user is not admin", async () => {
@@ -122,7 +122,25 @@ describe("Category - Routes", () => {
         },
       });
 
-      expect(res.status).toEqual(403);
+      expect(res.status).toBe(403);
+    });
+
+    it("Returns bad request status when data is invalid", async () => {
+      authService.decodeToken.mockResolvedValue({
+        user: customer,
+      });
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: {
+          name: "",
+        },
+      });
+
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({
+        error: '"name" is not allowed to be empty',
+      });
     });
   });
 
@@ -144,7 +162,7 @@ describe("Category - Routes", () => {
         id: category.id,
         name: category.name,
       });
-      expect(res.status).toEqual(200);
+      expect(res.status).toBe(200);
       expect(await res.json()).toEqual(category);
     });
 
@@ -158,7 +176,7 @@ describe("Category - Routes", () => {
         },
       });
 
-      expect(res.status).toEqual(401);
+      expect(res.status).toBe(401);
     });
 
     it("Returns forbidden status when user is not admin", async () => {
@@ -173,7 +191,25 @@ describe("Category - Routes", () => {
         },
       });
 
-      expect(res.status).toEqual(403);
+      expect(res.status).toBe(403);
+    });
+
+    it("Returns bad request status when data is invalid", async () => {
+      authService.decodeToken.mockResolvedValue({
+        user: customer,
+      });
+
+      const res = await fetch(`${API_URL}/${category.id}`, {
+        method: "PUT",
+        body: {
+          name: "",
+        },
+      });
+
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({
+        error: '"name" is not allowed to be empty',
+      });
     });
   });
 
@@ -189,7 +225,7 @@ describe("Category - Routes", () => {
       });
 
       expect(categoryService.deleteCategory).toHaveBeenCalledWith(category.id);
-      expect(res.status).toEqual(200);
+      expect(res.status).toBe(200);
       expect(await res.json()).toEqual({ deleted: true });
     });
 
@@ -200,7 +236,7 @@ describe("Category - Routes", () => {
         method: "DELETE",
       });
 
-      expect(res.status).toEqual(401);
+      expect(res.status).toBe(401);
     });
 
     it("Returns forbidden status when user is not admin", async () => {
@@ -212,7 +248,7 @@ describe("Category - Routes", () => {
         method: "DELETE",
       });
 
-      expect(res.status).toEqual(403);
+      expect(res.status).toBe(403);
     });
   });
 });

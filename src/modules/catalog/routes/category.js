@@ -3,6 +3,8 @@ const express = require("express");
 const { asyncMiddleware } = require("../../../utils/errors");
 const { CUSTOMER, ADMIN } = require("../../authentication/roles");
 const authorize = require("../../authentication/authorize");
+const validate = require("../../../utils/validation");
+const categorySchema = require("../validation-schemas/category");
 const categoryService = require("../services/category");
 
 module.exports = (app) => {
@@ -32,6 +34,7 @@ module.exports = (app) => {
 
   router.post(
     "/",
+    validate(categorySchema),
     authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { name } = req.body;
@@ -45,6 +48,7 @@ module.exports = (app) => {
 
   router.put(
     "/:id",
+    validate(categorySchema),
     authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { id } = req.params;
