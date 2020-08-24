@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "knex migrate:latest && node src/index.js",
     "test": "jest .",
     "start-dev": "knex migrate:latest && nodemon ./src/index.js",
     "knex": "knex",
