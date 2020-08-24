@@ -10,6 +10,8 @@ exports.up = async (knex) => {
   return knex.schema.createTable("products", (table) => {
     table.increments();
     table.string("name", 80).notNullable();
+    table.string("description").notNullable();
+    table.string("image_url").notNullable();
     table
       .integer("category_id")
       .notNullable()

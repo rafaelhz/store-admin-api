@@ -25,8 +25,7 @@ module.exports = (app) => {
     "/:id",
     authorize([CUSTOMER, ADMIN]),
     asyncMiddleware(async (req, res) => {
-      const { id } = req.params;
-      const category = await categoryService.getCategoryById(id);
+      const category = await categoryService.getCategoryById(req.params.id);
 
       res.json(category);
     })
@@ -38,6 +37,7 @@ module.exports = (app) => {
     authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
       const { name } = req.body;
+
       const category = await categoryService.createCategory({
         name,
       });
@@ -51,10 +51,10 @@ module.exports = (app) => {
     validate(categorySchema),
     authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
-      const { id } = req.params;
       const { name } = req.body;
+
       const category = await categoryService.updateCategory({
-        id,
+        id: req.params.id,
         name,
       });
 
@@ -66,8 +66,7 @@ module.exports = (app) => {
     "/:id",
     authorize([ADMIN]),
     asyncMiddleware(async (req, res) => {
-      const id = req.params.id;
-      const deleted = await categoryService.deleteCategory(id);
+      const deleted = await categoryService.deleteCategory(req.params.id);
 
       res.json({ deleted });
     })

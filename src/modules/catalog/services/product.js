@@ -4,16 +4,28 @@ const getProducts = () => {
   return productRepository.getProducts();
 };
 
-const createProduct = (product) => {
-  return productRepository.createProduct(product);
+const getProductById = (id) => {
+  return productRepository.getProductById(id);
 };
 
-const updateProduct = (product) => {
-  return productRepository.updateProduct(product);
+const createProduct = async (product) => {
+  const id = await productRepository.createProduct(product);
+  return getProductById(id);
+};
+
+const updateProduct = async (product) => {
+  await productRepository.updateProduct(product);
+  return getProductById(product.id);
+};
+
+const deleteProduct = (product) => {
+  return productRepository.deleteProduct(product);
 };
 
 module.exports = {
   getProducts,
+  getProductById,
   createProduct,
   updateProduct,
+  deleteProduct,
 };
